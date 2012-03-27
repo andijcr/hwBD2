@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="studentClient/simpledb/|studentClient/derby/Servlet/|studentClient/derby/XML/|studentClient/derby/|studentClient/derby/JPAStudentInfo/|studentClient/derby/StudentInfo/" kind="src" path=""/>
+	<classpathentry excluding="Servlet/|XML/|JPAStudentInfo/|StudentInfo/" kind="src" path="studentClient/derby"/>
+	<classpathentry kind="src" path="studentClient/derby/JPAStudentInfo"/>
+	<classpathentry kind="src" path="studentClient/derby/Servlet"/>
+	<classpathentry kind="src" path="studentClient/derby/StudentInfo"/>
+	<classpathentry kind="src" path="studentClient/derby/XML"/>
+	<classpathentry kind="src" path="studentClient/simpledb"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="simpledb"/>
+</classpath>
