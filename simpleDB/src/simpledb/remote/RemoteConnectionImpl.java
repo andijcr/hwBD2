@@ -1,8 +1,11 @@
 package simpledb.remote;
 
-import simpledb.tx.Transaction;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
+import simpledb.file.FileMgr;
+import simpledb.server.SimpleDB;
+import simpledb.tx.Transaction;
 
 /**
  * The RMI server-side implementation of RemoteConnection.
@@ -55,6 +58,9 @@ class RemoteConnectionImpl extends UnicastRemoteObject implements RemoteConnecti
     */
    void commit() {
       tx.commit();
+      FileMgr fileMgr=SimpleDB.fileMgr();
+      System.out.println(fileMgr.getAggregatedReadStatistics());
+      fileMgr.clearReadStatistics();
       tx = new Transaction();
    }
    

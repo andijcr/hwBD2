@@ -22,6 +22,9 @@ import java.util.*;
  * @author Edward Sciore
  */
 public class FileMgr {
+	private static final boolean STATISTICS_ON=true;
+	private FileStatistics statistics;
+
    private File dbDirectory;
    private boolean isNew;
    private Map<String,FileChannel> openFiles = new HashMap<String,FileChannel>();
@@ -48,6 +51,11 @@ public class FileMgr {
       for (String filename : dbDirectory.list())
          if (filename.startsWith("temp"))
          new File(dbDirectory, filename).delete();
+      
+      // init statistics subsystem for reads and writes
+      if(STATISTICS_ON){
+    	  statistics= new FileStatistics();
+      }
    }
 
    /**
@@ -60,6 +68,9 @@ public class FileMgr {
          bb.clear();
          FileChannel fc = getFile(blk.fileName());
          fc.read(bb, blk.number() * BLOCK_SIZE);
+         if(STATISTICS_ON){
+        	 statistics.registerRead(blk);
+         }
       }
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
@@ -138,5 +149,23 @@ public class FileMgr {
          openFiles.put(filename, fc);
       }
       return fc;
+   }
+   
+   public void resetStatistics(){
+	   if(STATISTICS_ON){
+		   statistics.reset();
+	   }
+   }
+
+   public String getAggregatedReadStatistics() {
+	   if(STATISTICS_ON)
+		   return statistics.getAggregatedReadStatistics();
+	   else
+		   return "";
+   }
+
+   public void clearReadStatistics() {
+	   if(STATISTICS_ON)
+		   statistics.clearReadStatistics();
    }
 }
