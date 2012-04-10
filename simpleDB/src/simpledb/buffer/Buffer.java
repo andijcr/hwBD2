@@ -19,7 +19,8 @@ public class Buffer {
    private int pins = 0;
    private int modifiedBy = -1;  // negative means not modified
    private int logSequenceNumber = -1; // negative means no corresponding log record
-
+   private long lastTimeUsed=0;
+   
    /**
     * Creates a new buffer, wrapping a new 
     * {@link simpledb.file.Page page}.  
@@ -131,8 +132,12 @@ public class Buffer {
     */
    void pin() {
       pins++;
+      lastTimeUsed=System.currentTimeMillis();
    }
 
+   public long getLastTimeUsed() {
+	   return lastTimeUsed;
+   }
    /**
     * Decreases the buffer's pin count.
     */
