@@ -12,11 +12,14 @@ public class TestRecord {
 	private static String POINTS="points";
 	private static String NAME="name";
 	private static int NAME_LENGTH=5;
+	private static String FILE= "prova";
+	private static String FILENAME = FILE + ".tbl";
 	
 	private FileMgr fileMgr;
 	private RecordFile file;
 	private int lastId=0;
 	private Random rand;
+	private Transaction tx;
 
 	TestRecord(){
 		Schema sch = new Schema();
@@ -24,9 +27,9 @@ public class TestRecord {
 		sch.addIntField(POINTS);
 		sch.addStringField(NAME, NAME_LENGTH);
 		
-		TableInfo ti = new TableInfo("prova",sch);
+		TableInfo ti = new TableInfo(FILE,sch);
 
-		Transaction tx = new Transaction();
+		tx = new Transaction();
 		file=new RecordFile(ti, tx);
 		rand=new Random();
 		fileMgr=SimpleDB.fileMgr();
@@ -41,7 +44,7 @@ public class TestRecord {
 			file.setString(NAME, "abba:");
 		}
 		System.out.println(quantity + " record scritti");
-		fileMgrStat();
+		fileStats();
 	}
 
 	private void scanAllRecords(){
@@ -51,7 +54,7 @@ public class TestRecord {
 		while(file.next())
 			count++;
 		System.out.println(count + " record letti");
-		fileMgrStat();
+		fileStats();
 	}
 
 	private void deleteHalfRecords(){
@@ -67,7 +70,7 @@ public class TestRecord {
 			}
 		}
 		System.out.println(readCount + " record letti, " + deletedCount + " record eliminati");
-		fileMgrStat();
+		fileStats();
 	}
 	
 	private void scanAndAnalizeRecords(){
@@ -80,10 +83,11 @@ public class TestRecord {
 			sum+=file.getInt(POINTS);
 		}
 		System.out.println(readCount + " record letti. Media calcolata per il campo " + POINTS + ": " + sum/readCount);
-		fileMgrStat();
+		fileStats();
 	}
 	
-	private void fileMgrStat(){
+	private void fileStats(){
+		System.out.println(tx.size(FILENAME) + " blocchi in " + FILENAME);
 	    System.out.println(fileMgr.getAggregatedReadStatistics());
 	    System.out.println(fileMgr.getAggregatedWriteStatistics());
 	    fileMgr.resetStatistics();

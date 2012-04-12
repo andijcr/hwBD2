@@ -132,7 +132,6 @@ public class Buffer {
     */
    void pin() {
       pins++;
-      lastTimeUsed=System.currentTimeMillis();
    }
 
    public long getLastTimeUsed() {
@@ -143,6 +142,7 @@ public class Buffer {
     */
    void unpin() {
       pins--;
+      lastTimeUsed=System.currentTimeMillis();
    }
 
    /**

@@ -87,6 +87,10 @@ public class FileMgr {
          bb.rewind();
          FileChannel fc = getFile(blk.fileName());
          fc.write(bb, blk.number() * BLOCK_SIZE);
+         if(STATISTICS_ON){
+        	 statistics.registerWrite(blk);
+         }
+
       }
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
@@ -160,6 +164,13 @@ public class FileMgr {
    public String getAggregatedReadStatistics() {
 	   if(STATISTICS_ON)
 		   return statistics.getAggregatedReadStatistics();
+	   else
+		   return "";
+   }
+
+   public String getAggregatedWriteStatistics() {
+	   if(STATISTICS_ON)
+		   return statistics.getAggregatedWriteStatistics();
 	   else
 		   return "";
    }
